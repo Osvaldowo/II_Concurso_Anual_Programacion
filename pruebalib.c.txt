@@ -1,0 +1,21 @@
+#include "Grafos.h"
+int main(){
+Vertice *lista = NULL,*aux = NULL;
+int t=0;
+    lista=insertarfinalV(lista,'A');
+    lista=insertarfinalV(lista,'B');
+    lista=insertarfinalV(lista,'C');
+    lista=insertarfinalV(lista,'D');
+
+    aux=buscarOrigen(lista,'A');
+    aux->listaAristas=insertarfinalA(aux->listaAristas,'B',38);
+    aux->listaAristas=insertarfinalA(aux->listaAristas,'C',23);
+
+    aux=buscarOrigen(lista,'C');
+    aux->listaAristas=insertarfinalA(aux->listaAristas,'A',23);
+    aux->listaAristas=insertarfinalA(aux->listaAristas,'D',32);
+
+    listaAdyacencia(lista);
+    matrizAdyacencia(lista);
+
+return 0;}
