@@ -1,0 +1,172 @@
+#ifndef GRAFOS_H_INCLUDED
+#define GRAFOS_H_INCLUDED
+#include <stdio.h>
+#include <stdlib.h>
+
+
+typedef struct _Vertice{
+    char nombre;
+    struct _Vertice *sigVertice;
+    struct _Arista *listaAristas;
+}Vertice;
+
+typedef struct _Arista{
+    char nombre;
+    int ponderacion;
+    struct _Arista *siguiente;
+}Arista;
+
+Vertice *crearVertice(char d){ //nodo con memoria din�mica
+        Vertice *nuevo;
+        nuevo=(Vertice*)malloc(sizeof(Vertice));
+        nuevo->nombre=d;
+        nuevo->sigVertice=NULL;
+        nuevo->listaAristas=NULL;
+        return nuevo;
+    }
+
+Arista *crearArista(char d,int p){ //nodo con memoria din�mica
+        Arista *nuevo;
+        nuevo=(Arista*)malloc(sizeof(Arista));
+        nuevo->nombre = d;
+        nuevo->ponderacion = p;
+        nuevo->siguiente = NULL;
+        return nuevo;
+    }
+
+Vertice *insertarfinalV(Vertice *inicio,char dato){//formar de fila
+      Vertice *nuevo = NULL,*aux = NULL;
+        nuevo=crearVertice(dato);
+      if(inicio == NULL){
+            inicio=nuevo;
+      }else{
+        aux=inicio;
+        while(aux->sigVertice!=NULL){
+                aux=aux->sigVertice;
+        }
+        aux->sigVertice=nuevo;
+        return inicio;
+      }
+    }
+
+Arista *insertarfinalA(Arista *listaArista,char dato,int p){//formar de fila
+      Arista *nuevo = NULL,*aux = NULL;
+        nuevo=crearArista(dato,p);
+      if(listaArista == NULL){
+            listaArista=nuevo;
+      }else{
+        aux=listaArista;
+        while(aux->siguiente!=NULL){
+                aux=aux->siguiente;
+        }
+        aux->siguiente=nuevo;
+        return listaArista;
+      }
+    }
+
+Vertice *buscarOrigen(Vertice *lista,char n){
+    Vertice *aux;
+    if(lista!=NULL){
+        aux=lista;
+            while(aux != NULL){
+                if(n != aux->nombre){
+                       aux=aux->sigVertice;
+                }else{
+                    return aux;
+                }
+            }//fin while
+    }return lista;
+}
+
+void listaAdyacencia(Vertice *lista){
+    Arista *A;
+    if(lista == NULL)
+        printf("No exite el grafo");
+    else{
+        while(lista != NULL){
+         printf("Vertice %c",lista->nombre);
+         A=lista->listaAristas;
+         if(A==NULL){
+             printf("\tNo exiten relaciones");
+         }else{
+         while(A!=NULL){
+            printf("\t%c/%d\t",A->nombre,A->ponderacion);
+            A=A->siguiente;
+          }
+         }
+        lista=lista->sigVertice;
+         printf("\n");
+
+      }
+    }
+}
+
+int Longitud(Vertice *frente){
+    int cuenta=0;
+    if(frente==NULL){
+        return cuenta;
+    }else{
+        while(frente!=NULL){
+            cuenta++;
+            frente=frente->sigVertice;
+        }
+        return cuenta;
+    }
+}//din de longitud
+
+int obtenerdes(Vertice *origen,char n){
+    int cuenta = 0;
+    Vertice *aux = origen;
+    while(aux != NULL){
+        if(aux->nombre == n){
+            return cuenta;
+        }
+        cuenta++;
+        aux=aux->sigVertice;
+    }
+    return -1;
+}
+void matrizAdyacencia(Vertice *fila) {
+    Arista *A = NULL;
+    Vertice *aux = fila;
+    int t = Longitud(fila);
+    int** matriz;
+    matriz = (int **)malloc(t * sizeof(int*));
+
+    for (int i = 0; i < t; i++) {
+        matriz[i] = (int *)malloc(t * sizeof(int));  // Reservar memoria
+    }
+
+    for (int i = 0; i < t; i++) {
+        for (int j = 0; j < t; j++) {
+            matriz[i][j] = 0;  // ceros
+        }
+    }
+    for (int i = 0; i < t; i++) {
+        A = aux->listaAristas;
+        while (A != NULL) {
+            int destino = obtenerdes(fila, A->nombre);
+            if (destino != -1) {
+                matriz[i][destino] = A->ponderacion;
+            }
+            A = A->siguiente;
+        }
+        aux = aux->sigVertice;
+    }
+
+    printf("Matriz de adyacencia\n");
+    for (int i = 0; i < t; i++) {
+        for (int j = 0; j < t; j++) {
+            printf("%d\t", matriz[i][j]);
+        }
+        printf("\n");
+    }
+
+    // Liberar memoria
+    for (int i = 0; i < t; i++) {
+        free(matriz[i]);
+    }
+    free(matriz);
+}
+
+#endif 
