@@ -1,0 +1,28 @@
+# Compilación y Binarios
+*.o
+*.obj
+*.exe
+*.out
+*.app
+
+# Carpetas de salida comunes
+bin/
+build/
+dist/
+Debug/
+Release/
+
+# Archivos de VS Code (opcional, pero recomendado si trabajas solo)
+.vscode/
+ipch/
+*.VC.db
+*.opendb
+
+# Temporales del sistema
+.DS_Store
+Thumbs.db
+
+# Ignorar archivos sin extensión (ejecutables en Linux)
+*
+!*.*
+!*/
