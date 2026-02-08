@@ -1,0 +1,77 @@
+#include <stdio.h>
+int main(){
+      int N=rand()%2+1,X;
+      printf("Numero de enemigos : %d\n",N);
+      int ai[N],di[N];
+
+      printf("Ingrese los valores de ataque de los enemigos\n");
+        for(int i=0; i < N; i++){
+                scanf("%d",&ai[i]);
+        }
+
+        printf("Ingrese los valores de defensa de los enemigos\n");
+        for(int i=0; i < N; i++){
+                scanf("%d",&di[i]);
+        }
+
+
+    mergeSort(di);
+ //   int a = sizeof(di)/sizeof(di[0]);
+ //   for(int i=0; i<a; i++){
+ //       printf("%d\t",di[i]);
+ //   }
+    X = di[0];
+    printf("\nPuntos minimos necesarios : %d",X);
+   return 0; }
+
+void mergeSort(int arr[]){
+ int tam = sizeof(arr)/sizeof(arr[0]);
+ if(tam <=1)
+    return; //base case
+ int posmed = tam/2;
+ int arriz[posmed],arrde[tam - posmed];
+    //llenando los arreglos arriz y arrde
+ int j = 0;
+    for(int i = 0;i < tam;i++){
+        if(i < posmed)
+           arriz[i] = arr[i];
+        else{
+            arrde[j] = arr[i];
+            j++;
+        }
+    }
+    mergeSort(arriz);
+    mergeSort(arrde);
+    merge(arriz,arrde,arr);
+}
+
+void merge(int arriz[],int arrde[],int arr[]){
+    int tamarr = sizeof(arr)/sizeof(arr[0]);
+    int tamiz = tamarr/2,tamder = tamarr - tamiz;
+    int i = 0, l = 0, r = 0;//indices
+    //checar condiciones para combinar
+    while(l < tamiz && r < tamder){
+        if(arriz[l] < arrde[r]){
+            arr[i] = arriz[l];
+            i++;
+            l++;
+        }else{
+            arr[i] = arrde[r];
+            i++;
+            r++;
+        }
+    }
+    while(l < tamiz){ //ultimo elemento del arreglo izquierd
+        arr[i] = arriz[i];
+        i++;
+        l++;
+    }
+    while(r < tamder){ //ultimo elemento del arreglo derecho
+        arr[i] = arrde[r];
+        i++;
+        r++;
+    }
+
+    
+}
+
